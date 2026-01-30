@@ -1,0 +1,130 @@
+﻿<Window x:Class="HouseStockApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Управление заявками на ремонт и обслуживание"
+        Height="700" Width="950"
+        Style="{StaticResource BaseWindowStyle}"
+        Icon="/Resources/icon.ico">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#F4E8D3" Padding="15">
+            <Image Source="/Resources/logo.png" Height="40" HorizontalAlignment="Left" Stretch="Uniform" />
+        </Border>
+
+        <!-- Main Content Area: Tiles -->
+        <!-- Main Content Area: Tiles -->
+        <ListBox x:Name="RequestsListBox" Grid.Row="1" Margin="10" 
+                 Background="Transparent" BorderThickness="0" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 MouseDoubleClick="RequestsListView_MouseDoubleClick">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        Background="{TemplateBinding Background}" 
+                                        Padding="{TemplateBinding Padding}" 
+                                        SnapsToDevicePixels="true">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter TargetName="Bd" Property="Background" Value="#E6F2FF"/> <!-- Light blue selection -->
+                                        <Setter TargetName="Bd" Property="CornerRadius" Value="10"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="280" Height="220" Margin="10" Background="White" CornerRadius="10" Cursor="Hand">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/> <!-- Header -->
+                                <RowDefinition Height="*"/>    <!-- Content -->
+                                <RowDefinition Height="Auto"/> <!-- Footer -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Header -->
+                            <Border Grid.Row="0" CornerRadius="10,10,0,0" Padding="15,10">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="Выполнено">
+                                                <Setter Property="Background" Value="#67BA80"/> <!-- Same as Accent -->
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="В работе">
+                                                <Setter Property="Background" Value="#FFA500"/> <!-- Orange -->
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <DockPanel LastChildFill="False">
+                                    <TextBlock DockPanel.Dock="Left" Text="{Binding Apartment.House.Address}" Foreground="White" FontWeight="Bold" TextTrimming="CharacterEllipsis" MaxWidth="180"/>
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding Apartment.ApartmentNumber, StringFormat='кв. {0}'}" Foreground="White" Opacity="0.9"/>
+                                </DockPanel>
+                            </Border>
+
+                            <!-- Content -->
+                            <Border Grid.Row="1" Padding="15">
+                                <StackPanel>
+                                    <TextBlock Text="Проблема:" FontSize="12" Foreground="Gray" Margin="0,0,0,2"/>
+                                    <TextBlock Text="{Binding ProblemDescription}" TextWrapping="Wrap" MaxHeight="60" TextTrimming="CharacterEllipsis"/>
+                                    
+                                    <TextBlock Text="Заявитель:" FontSize="12" Foreground="Gray" Margin="0,10,0,2"/>
+                                    <TextBlock Text="{Binding ApplicantName}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding ContactPhone}" FontSize="12" Foreground="Gray"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Footer -->
+                            <Border Grid.Row="2" BorderBrush="#EEEEEE" BorderThickness="0,1,0,0" Padding="15,10">
+                                <Grid>
+                                    <TextBlock Text="{Binding CreatedAt, StringFormat='dd.MM.yyyy'}" Foreground="Gray" FontSize="12" HorizontalAlignment="Left"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="#4A90E2" FontWeight="Bold" FontSize="12" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20">
+            <Button Content="Добавить заявку" Style="{StaticResource AccentButtonStyle}" Click="OnAddRequestClick" MinWidth="130"/>
+            <Button Content="История по адресу" Style="{StaticResource SecondaryButtonStyle}" Click="OnHistoryByAddressClick" MinWidth="130"/>
+            <Button Content="История по сотруднику" Style="{StaticResource SecondaryButtonStyle}" Click="OnHistoryByEmployeeClick" MinWidth="130"/>
+            <Button Content="Удалить" Style="{StaticResource SecondaryButtonStyle}" Click="OnDeleteRequestClick" MinWidth="130"/>
+            <Button Content="Адреса" Style="{StaticResource SecondaryButtonStyle}" Click="OnViewAddressesClick" MinWidth="130"/>
+            <Button Content="Сотрудники" Style="{StaticResource SecondaryButtonStyle}" Click="OnViewEmployeesClick" MinWidth="130"/>
+        </StackPanel>
+    </Grid>
+</Window>

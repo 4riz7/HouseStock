@@ -1,0 +1,110 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Цвета -->
+    <Color x:Key="PrimaryBackgroundColor">#FFFFFF</Color> <!-- Основной фон -->
+    <Color x:Key="SecondaryBackgroundColor">#F4E8D3</Color> <!-- Дополнительный фон -->
+    <Color x:Key="AccentColor">#67BA80</Color> <!-- Акцент (кнопки, выделение) -->
+
+    <!-- Кисти -->
+    <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{StaticResource PrimaryBackgroundColor}" />
+    <SolidColorBrush x:Key="SecondaryBackgroundBrush" Color="{StaticResource SecondaryBackgroundColor}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+
+    <!-- Шрифт по умолчанию -->
+    <Style x:Key="DefaultFont" TargetType="Control">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <!-- Базовый стиль окна -->
+    <Style x:Key="BaseWindowStyle" TargetType="Window">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Background" Value="{StaticResource PrimaryBackgroundBrush}" />
+    </Style>
+
+    <!-- Стиль для кнопок целевых действий (акцентных) -->
+    <Style x:Key="AccentButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="5"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#5AA972" />
+                        <!-- немного темнее акцента -->
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#4D9966" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Стиль для обычных кнопок (например, "Назад") -->
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="{StaticResource SecondaryBackgroundBrush}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Padding" Value="10,5" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Стиль для DataGrid (если используется) -->
+    <Style x:Key="StyledDataGrid" TargetType="DataGrid">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="RowHeight" Value="30" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="LightGray" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <!-- Стиль заголовка окна (для TextBlock, Label и т.п.) -->
+    <Style x:Key="WindowTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0,0,0,15" />
+        <Setter Property="Foreground" Value="Black" />
+    </Style>
+
+</ResourceDictionary>
